@@ -19,9 +19,9 @@
 
 declare(strict_types=1);
 
-namespace KnosTx\Boardify\task;
+namespace ClousClouds\Boardify\task;
 
-use KnosTx\Boardify\BoardManager;
+use ClousClouds\Boardify\BoardManager;
 use pocketmine\scheduler\Task;
 
 class BoardUpdateTask extends Task
