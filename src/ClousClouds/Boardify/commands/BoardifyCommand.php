@@ -11,58 +11,52 @@
  *                                      __/ |
  *                                     |___/
  * @license MIT
- * @author KnosTx
- * @link https://github.com/KnosTx/Boardify
+ * @author ClousClouds Team
+ * @link https://github.com/ClousClouds/Boardify
  *
  *
  */
 
 declare(strict_types=1);
 
-namespace KnosTx\Boardify\commands;
+namespace ClousClouds\Boardify\commands;
 
-use KnosTx\Boardify\Main;
+use ClousClouds\Boardify\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
-use function strtolower;
 
 class BoardifyCommand extends Command implements PluginOwned
 {
 	use PluginOwnedTrait;
 
-	private Main $plugin;
-
-	/**
-	 * Boardify Command Construction
-	 */
-	public function __construct(Main $plugin)
+	public function __construct(private Main $plugin)
 	{
 		parent::__construct('boardify');
 		$this->setDescription('Boardify Commands');
-		$this->setUsage('/boardify <reload>');
+		$this->setUsage('/boardify reload');
 		$this->setAliases(['board']);
 		$this->setPermission('boardify.command');
 
 		$this->owningPlugin = $plugin;
-		$this->plugin = $plugin;
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool
+	public function execute(CommandSender $sender, string $label, array $args) : bool
 	{
 		if (!$sender->hasPermission('boardify.command')) {
-			$sender->sendMessage("§cYou don't have permission to use this command.");
-			return false;
+			$sender->sendMessage('§cYou do not have permission.');
+			return true;
 		}
 
-		if (isset($args[0]) && strtolower($args[0]) === 'reload') {
+		if (($args[0] ?? '') === 'reload') {
 			$this->plugin->reloadConfig();
-			$sender->sendMessage('§aBoardify configuration reloaded!');
-		} else {
-			$sender->sendMessage('§cUsage: /boardify <reload>');
+			$this->plugin->getConfigManager()->reload();
+			$sender->sendMessage('§aBoardify config reloaded!');
+			return true;
 		}
 
+		$sender->sendMessage('§cUsage: /boardify reload');
 		return true;
 	}
 }

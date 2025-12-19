@@ -11,27 +11,33 @@
  *                                      __/ |
  *                                     |___/
  * @license MIT
- * @author KnosTx
- * @link https://github.com/KnosTx/Boardify
+ * @author ClousClouds Team
+ * @link https://github.com/ClousClouds/Boardify
  *
  *
  */
 
 declare(strict_types=1);
 
-namespace KnosTx\Boardify;
+namespace ClousClouds\Boardify;
 
 use pocketmine\utils\Config;
 
 class ConfigManager
 {
 	private Config $config;
-	private Main $plugin;
 
-	public function __construct(Main $plugin)
+	public function __construct(private Main $plugin)
 	{
-		$this->plugin = $plugin;
-		$this->config = new Config($this->plugin->getDataFolder() . 'config.yml', Config::YAML);
+		$this->config = new Config(
+			$this->plugin->getDataFolder() . 'config.yml',
+			Config::YAML
+		);
+	}
+
+	public function reload() : void
+	{
+		$this->config->reload();
 	}
 
 	/**
@@ -42,8 +48,8 @@ class ConfigManager
 		return $this->config->get('default-board', []);
 	}
 
-	public function getUpdateInterval() : float
+	public function getUpdateInterval() : int
 	{
-		return (float) $this->config->get('update-interval', 0.7);
+		return (int) $this->config->get('update-interval', 20);
 	}
 }

@@ -11,8 +11,8 @@
  *                                      __/ |
  *                                     |___/
  * @license MIT
- * @author KnosTx
- * @link https://github.com/KnosTx/Boardify
+ * @author ClousClouds Team
+ * @link https://github.com/ClousClouds/Boardify
  *
  *
  */

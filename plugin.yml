@@ -1,6 +1,6 @@
 name: Boardify
-main: KnosTx\Boardify\Main
-version: 1.0.0-alpha
+main: ClousClouds\Boardify\Main
+version: 1.0.0.alpha
 api: 5.0.0
 commands:
   boardify:

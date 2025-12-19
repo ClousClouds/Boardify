@@ -11,21 +11,20 @@
  *                                      __/ |
  *                                     |___/
  * @license MIT
- * @author KnosTx
- * @link https://github.com/KnosTx/Boardify
+ * @author ClousClouds Team
+ * @link https://github.com/ClousClouds/Boardify
  *
  *
  */
 
 declare(strict_types=1);
 
-namespace KnosTx\Boardify;
+namespace ClousClouds\Boardify;
 
-use KnosTx\Boardify\task\BoardUpdateTask;
-use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\Task;
 
-class Main extends PluginBase implements Listener
+class Main extends PluginBase
 {
 	private ConfigManager $configManager;
 	private BoardManager $boardManager;
@@ -36,8 +35,18 @@ class Main extends PluginBase implements Listener
 
 		$this->configManager = new ConfigManager($this);
 		$this->boardManager = new BoardManager($this);
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		$this->getScheduler()->scheduleRepeatingTask(new BoardUpdateTask($this->boardManager), 10);
+
+		$this->getScheduler()->scheduleRepeatingTask(
+			new class($this) extends Task {
+				public function __construct(private Main $plugin) {}
+
+				public function onRun() : void
+				{
+					$this->plugin->getBoardManager()->updateBoards();
+				}
+			},
+			$this->configManager->getUpdateInterval()
+		);
 	}
 
 	public function getConfigManager() : ConfigManager
